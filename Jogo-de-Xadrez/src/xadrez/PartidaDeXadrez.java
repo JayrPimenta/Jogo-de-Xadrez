@@ -1,6 +1,5 @@
 package xadrez;
 
-import tabuleiro.Posicao;
 import tabuleiro.Tabuleiro;
 import xadrez.unidades.Rei;
 import xadrez.unidades.Torre;
@@ -26,14 +25,17 @@ public class PartidaDeXadrez {
 		return matriz;
 	}
 	
+	private void colocarUnidade(char coluna, int linha, UnidadeDeXadrez unidade) {
+		tabuleiro.colocarUnidade(unidade, new ConversaoDePosicaoParaPadraoDoXadrez(coluna, linha).paraPosicao());
+	}
+	
 	private void inicioDaPartidaColocarUnidades() {
-		tabuleiro.colocarUnidade(new Torre(tabuleiro, Cor.BRANCO), new Posicao(0, 0));
-		tabuleiro.colocarUnidade(new Torre(tabuleiro, Cor.BRANCO), new Posicao(0, 7));
-		tabuleiro.colocarUnidade(new Rei(tabuleiro, Cor.BRANCO),new Posicao(0,4));
+		colocarUnidade('a', 8, new Torre(tabuleiro, Cor.BRANCO));
+		colocarUnidade('h', 8, new Torre(tabuleiro, Cor.BRANCO));
+		colocarUnidade('e', 8, new Rei(tabuleiro, Cor.BRANCO));
 		
-		tabuleiro.colocarUnidade(new Torre(tabuleiro, Cor.PRETO), new Posicao(7, 0));
-		tabuleiro.colocarUnidade(new Torre(tabuleiro, Cor.PRETO), new Posicao(7, 7));
-		tabuleiro.colocarUnidade(new Rei(tabuleiro, Cor.BRANCO),new Posicao(7,4));
+		colocarUnidade('e', 1, new Rei(tabuleiro, Cor.BRANCO));
+		
 	}
 	
 }

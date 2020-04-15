@@ -8,7 +8,12 @@ public class Programa {
 
 		PartidaDeXadrez partida = new PartidaDeXadrez();
 		InterfaceDoUsuario.montarTabuleiro(partida.getUnidades());
+		
+		
+		
+		
+		
+		
 
 	}
-
 }

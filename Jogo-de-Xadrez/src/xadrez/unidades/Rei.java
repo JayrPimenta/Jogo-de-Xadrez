@@ -11,6 +11,6 @@ public class Rei extends UnidadeDeXadrez {
 	}
 	
 	public String toString() {
-		return "Re";
+		return "[Re]";
 	}
 }

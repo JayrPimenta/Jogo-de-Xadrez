@@ -46,6 +46,22 @@ public class Tabuleiro {
 		unidade.posicao = posicao;
 	}
 	
+	public Unidade removerUnidade(Posicao posicao) {
+		if (!verificarExistenciaDePosicao(posicao)) {
+			throw new TabuleiroExcecoes("Posição no tabuleiro não existe");
+		}
+		
+		if (unidade(posicao) == null) {
+			return null;
+		}
+		
+		Unidade retirarUnidadeDoTabuleiro = unidade(posicao);
+		retirarUnidadeDoTabuleiro.posicao = null;
+		unidades[posicao.getLinha()][posicao.getColuna()] = null;
+		
+		return retirarUnidadeDoTabuleiro;
+	}
+	
 	public boolean verificarExistenciaDePosicao(int linha, int coluna) {
 		return linha >= 0 && linha < linhas && coluna >= 0 && coluna < colunas;
 	}

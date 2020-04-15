@@ -12,6 +12,6 @@ public class Torre extends UnidadeDeXadrez {
 	
 	@Override
 	public String toString() {
-		return "[Tr]";
+		return "Tr";
 	}
 }

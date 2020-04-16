@@ -27,6 +27,12 @@ public class PartidaDeXadrez {
 		return matriz;
 	}
 	
+	public boolean[][] movimentosPociveis(PosicaoDoXadrez posicaoDeOrigem){
+		Posicao posicao = posicaoDeOrigem.paraPosicao();
+		validarPosicaoDeOrigem(posicao);
+		return tabuleiro.unidade(posicao).movimentosPociveisDasUnidades();
+	}
+	
 	public UnidadeDeXadrez moverUnidadeDeXaderz(PosicaoDoXadrez posicaoDeOrigem,
 												PosicaoDoXadrez posicaoDeDestino) {
 		Posicao origem = posicaoDeOrigem.paraPosicao();

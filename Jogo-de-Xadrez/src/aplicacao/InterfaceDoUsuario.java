@@ -52,7 +52,7 @@ public class InterfaceDoUsuario {
 		for (int linha = 0; linha < unidades.length; linha++) {
 			System.out.print("#"+(8 - linha)+ " ");
 			for (int coluna = 0; coluna < unidades[linha].length; coluna++) {
-				colocarUnidade(unidades[linha][coluna]);
+				colocarUnidade(unidades[linha][coluna], false);
 			}
 			System.out.println();
 			System.out.println();
@@ -60,9 +60,25 @@ public class InterfaceDoUsuario {
 		System.out.println("    #A   #B   #C   #D   #E   #F   #G   #H");
 	}
 	
-	public static void colocarUnidade(UnidadeDeXadrez unidade) {
+	public static void montarTabuleiro(UnidadeDeXadrez[][] unidades, boolean [][] movimentosPociveis) {
+		for (int linha = 0; linha < unidades.length; linha++) {
+			System.out.print("#"+(8 - linha)+ " ");
+			for (int coluna = 0; coluna < unidades[linha].length; coluna++) {
+				colocarUnidade(unidades[linha][coluna], movimentosPociveis[linha][coluna]);
+			}
+			System.out.println();
+			System.out.println();
+		}
+		System.out.println("    #A   #B   #C   #D   #E   #F   #G   #H");
+	}
+	
+	public static void colocarUnidade(UnidadeDeXadrez unidade, boolean planoDeFundo) {
+		if (planoDeFundo) {
+			System.out.print(ANSI_CYAN_BACKGROUND);
+		}
+		
 		if (unidade == null) {
-			System.out.print("[  ]");
+			System.out.print("[  ]" + ANSI_RESET);
 		} else {
 			
 			if (unidade.getCor() == Cor.BRANCO) {

@@ -3,8 +3,9 @@ package aplicacao;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import xadrez.PosicaoDoXadrez;
 import xadrez.Cor;
+import xadrez.PartidaDeXadrez;
+import xadrez.PosicaoDoXadrez;
 import xadrez.UnidadeDeXadrez;
 
 public class InterfaceDoUsuario {
@@ -46,6 +47,13 @@ public class InterfaceDoUsuario {
 		catch (RuntimeException e) {
 			throw new InputMismatchException("Erro na conversão da posição. Informe valores validos de A1 a H8.");
 		}
+	}
+	
+	public static void criarPartida(PartidaDeXadrez partida) {
+		montarTabuleiro(partida.getUnidades());
+		System.out.println();
+		System.out.println("Turno: " + partida.getTurno());
+		System.out.println("Aguardando movimento do jogador "+ partida.getJogadorDaVez());
 	}
 	
 	public static void montarTabuleiro(UnidadeDeXadrez[][] unidades) {

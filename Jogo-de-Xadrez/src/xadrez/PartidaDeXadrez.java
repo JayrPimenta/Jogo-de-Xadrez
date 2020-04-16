@@ -9,10 +9,22 @@ import xadrez.unidades.Torre;
 public class PartidaDeXadrez {
 
 	private Tabuleiro tabuleiro;
+	private Integer turno;
+	private Cor jogadorDaVez;
 	
 	public PartidaDeXadrez() {
 		tabuleiro = new Tabuleiro(8, 8);
+		turno = 1;
+		jogadorDaVez = Cor.BRANCO;
 		inicioDaPartidaColocarUnidades();
+	}
+	
+	public int getTurno() {
+		return turno;
+	}
+	
+	public Cor getJogadorDaVez() {
+		return jogadorDaVez;
 	}
 	
 	public UnidadeDeXadrez[][] getUnidades(){
@@ -42,6 +54,7 @@ public class PartidaDeXadrez {
 		validarPosicaoDeOrigem(origem);
 		validarPosicaoAlvo(origem, destino);
 		Unidade unidadeCapturada = fazerMovimento(origem, destino);
+		auternarTurnos();
 		return (UnidadeDeXadrez) unidadeCapturada;
 		
 	}
@@ -57,6 +70,9 @@ public class PartidaDeXadrez {
 		if (!tabuleiro.verificarPosicaoOcupadaPorOutraUnidade(posicao)) {
 			throw new XadrezExcecoes("Não há uma unidade nesta posição.");
 		}
+		if (jogadorDaVez != ((UnidadeDeXadrez)tabuleiro.unidade(posicao)).getCor()) {
+			throw new XadrezExcecoes("Voce esta tentando mover uma unidade do adiversario, escolha uma de suas unidades");
+		}
 		if (!tabuleiro.unidade(posicao).verificarMovimentoPossivel()) {
 			throw new XadrezExcecoes("Não existe movimento possivel para a unidade escolhida");
 		}
@@ -66,6 +82,11 @@ public class PartidaDeXadrez {
 		if (!tabuleiro.unidade(origem).movimentoPocivelDaUnidade(destino)) {
 			throw new XadrezExcecoes("A unidade excolhida não pode fazer o movimento solicitado");
 		}
+	}
+	
+	private void auternarTurnos() {
+		turno++;
+		jogadorDaVez = (jogadorDaVez == Cor.BRANCO) ? Cor.PRETO : Cor.BRANCO;
 	}
 	
 	private void colocarUnidade(char coluna, int linha, UnidadeDeXadrez unidade) {

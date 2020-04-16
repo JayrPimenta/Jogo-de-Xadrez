@@ -19,7 +19,7 @@ public class Programa {
 		while(true) {
 			try {
 				InterfaceDoUsuario.atualizarATela();
-				InterfaceDoUsuario.montarTabuleiro(partida.getUnidades());
+				InterfaceDoUsuario.criarPartida(partida);
 				System.out.println();
 				System.out.print("Unidade: ");
 				

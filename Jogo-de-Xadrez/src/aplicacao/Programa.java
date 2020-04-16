@@ -25,6 +25,10 @@ public class Programa {
 				
 				PosicaoDoXadrez unidadeDeOrigem = InterfaceDoUsuario.lerPosicaoDaUnidade(sc);
 				
+				boolean[][] movimentosPossiveis = partida.movimentosPossiveis(unidadeDeOrigem);
+				InterfaceDoUsuario.atualizarATela();
+				InterfaceDoUsuario.montarTabuleiro(partida.getUnidades(), movimentosPossiveis);
+				
 				System.out.println();
 				System.out.print("Destino: ");
 				

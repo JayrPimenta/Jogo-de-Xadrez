@@ -13,14 +13,14 @@ public abstract class Unidade {
 		return tabuleiro;
 	}
 
-	public abstract boolean[][] movimentosPociveisDasUnidades();
+	public abstract boolean[][] movimentosPossiveisDasUnidades();
 	
 	public boolean movimentoPocivelDaUnidade(Posicao posicao) {
-		return movimentosPociveisDasUnidades()[posicao.getLinha()][posicao.getColuna()];
+		return movimentosPossiveisDasUnidades()[posicao.getLinha()][posicao.getColuna()];
 	}
 	
 	public boolean verificarMovimentoPossivel() {
-		boolean[][] matrizDePociveisMovimentos = movimentosPociveisDasUnidades();
+		boolean[][] matrizDePociveisMovimentos = movimentosPossiveisDasUnidades();
 		for (int linha = 0; linha < matrizDePociveisMovimentos.length; linha++) {
 			for(int coluna = 0; coluna < matrizDePociveisMovimentos[linha].length; coluna++) {
 				if (matrizDePociveisMovimentos[linha][coluna]) {

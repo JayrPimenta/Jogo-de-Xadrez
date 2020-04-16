@@ -17,7 +17,7 @@ public class Torre extends UnidadeDeXadrez {
 	}
 	
 	@Override
-	public boolean[][] movimentosPociveisDasUnidades() {
+	public boolean[][] movimentosPossiveisDasUnidades() {
 		boolean[][] matrizDePociveisMovimentos = new boolean[getTabuleiro().getLinhas()][getTabuleiro().getColunas()];
 		
 		Posicao verificarPosicao = new Posicao(0, 0);

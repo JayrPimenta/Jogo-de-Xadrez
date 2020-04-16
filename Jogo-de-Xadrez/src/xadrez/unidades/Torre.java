@@ -14,4 +14,10 @@ public class Torre extends UnidadeDeXadrez {
 	public String toString() {
 		return "Tr";
 	}
+	
+	@Override
+	public boolean[][] movimentosPociveisDasUnidades() {
+		boolean[][] matrizDePociveisMovimentos = new boolean[getTabuleiro().getLinhas()][getTabuleiro().getColunas()];
+		return matrizDePociveisMovimentos;
+	}
 }

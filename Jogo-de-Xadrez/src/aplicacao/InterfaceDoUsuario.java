@@ -9,6 +9,8 @@ import xadrez.UnidadeDeXadrez;
 
 public class InterfaceDoUsuario {
 	
+	
+	// Sistema de cores do console
 	public static final String ANSI_RESET = "\u001B[0m";
 	public static final String ANSI_BLACK = "\u001B[30m";
 	public static final String ANSI_RED = "\u001B[31m";
@@ -28,6 +30,12 @@ public class InterfaceDoUsuario {
 	public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
 	public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
 
+	//Metodo para limpara a tela do console
+	public static void atualizarATela() {
+		System.out.println("\033[H\033[2J");
+		System.out.flush();
+	}
+	
 	public static PosicaoDoXadrez lerPosicaoDaUnidade(Scanner sc) {
 		try {
 			String lanceDoJogador = sc.nextLine();

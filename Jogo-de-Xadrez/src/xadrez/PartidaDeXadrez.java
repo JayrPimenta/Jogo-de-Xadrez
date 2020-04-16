@@ -48,6 +48,9 @@ public class PartidaDeXadrez {
 		if (!tabuleiro.verificarPosicaoOcupadaPorOutraUnidade(posicao)) {
 			throw new XadrezExcecoes("Não há uma unidade nesta posição.");
 		}
+		if (!tabuleiro.unidade(posicao).verificarMovimentoPossivel()) {
+			throw new XadrezExcecoes("Não existe movimento possivel para a unidade escolhida");
+		}
 	}
 	
 	private void colocarUnidade(char coluna, int linha, UnidadeDeXadrez unidade) {
@@ -55,13 +58,13 @@ public class PartidaDeXadrez {
 	}
 	
 	private void inicioDaPartidaColocarUnidades() {
-		colocarUnidade('a', 8, new Torre(tabuleiro, Cor.BRANCO));
-		colocarUnidade('h', 8, new Torre(tabuleiro, Cor.BRANCO));
-		colocarUnidade('e', 8, new Rei(tabuleiro, Cor.BRANCO));
+		colocarUnidade('a', 1, new Torre(tabuleiro, Cor.BRANCO));
+		colocarUnidade('h', 1, new Torre(tabuleiro, Cor.BRANCO));
+		colocarUnidade('e', 1, new Rei(tabuleiro, Cor.BRANCO));
 		
-		colocarUnidade('a', 1, new Torre(tabuleiro, Cor.PRETO));
-		colocarUnidade('h', 1, new Torre(tabuleiro, Cor.PRETO));
-		colocarUnidade('e', 1, new Rei(tabuleiro, Cor.PRETO));
+		colocarUnidade('a', 8, new Torre(tabuleiro, Cor.PRETO));
+		colocarUnidade('h', 8, new Torre(tabuleiro, Cor.PRETO));
+		colocarUnidade('e', 8, new Rei(tabuleiro, Cor.PRETO));
 		
 	}
 	

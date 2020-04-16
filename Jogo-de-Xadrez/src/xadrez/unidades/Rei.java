@@ -13,4 +13,10 @@ public class Rei extends UnidadeDeXadrez {
 	public String toString() {
 		return "Re";
 	}
+
+	@Override
+	public boolean[][] movimentosPociveisDasUnidades() {
+		boolean[][] matrizDePociveisMovimentos = new boolean[getTabuleiro().getLinhas()][getTabuleiro().getColunas()];
+		return matrizDePociveisMovimentos;
+	}
 }

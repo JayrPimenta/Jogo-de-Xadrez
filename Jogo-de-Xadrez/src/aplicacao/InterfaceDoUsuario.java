@@ -1,7 +1,10 @@
 package aplicacao;
 
+import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import xadrez.Cor;
 import xadrez.PartidaDeXadrez;
@@ -49,11 +52,15 @@ public class InterfaceDoUsuario {
 		}
 	}
 	
-	public static void criarPartida(PartidaDeXadrez partida) {
+	public static void criarPartida(PartidaDeXadrez partida, List<UnidadeDeXadrez> listaUnidadesCapturadas) {
 		montarTabuleiro(partida.getUnidades());
+		System.out.println();
+		mostrarUnidadesCapturadas(listaUnidadesCapturadas);
 		System.out.println();
 		System.out.println("Turno: " + partida.getTurno());
 		System.out.println("Aguardando movimento do jogador "+ partida.getJogadorDaVez());
+		
+		
 	}
 	
 	public static void montarTabuleiro(UnidadeDeXadrez[][] unidades) {
@@ -95,6 +102,24 @@ public class InterfaceDoUsuario {
 			}	
 		}
 		System.out.print(" ");
+	}
+	
+	private static void mostrarUnidadesCapturadas(List<UnidadeDeXadrez> unidadeCapturada) {
+		
+		List<UnidadeDeXadrez> unidadesBrancas = unidadeCapturada.stream().filter(unidade -> unidade.getCor() == Cor.BRANCO).collect(Collectors.toList());
+		List<UnidadeDeXadrez> unidadesPretas = unidadeCapturada.stream().filter(unidade -> unidade.getCor() == Cor.PRETO).collect(Collectors.toList());
+		
+		System.out.println("Unidades capturadas:");
+		
+		System.out.print("Brancas: ");
+		System.out.print(ANSI_WHITE);
+		System.out.println(Arrays.toString(unidadesBrancas.toArray()));
+		System.out.print(ANSI_RESET);
+		
+		System.out.print("Pretas: ");
+		System.out.print(ANSI_BLUE);
+		System.out.println(Arrays.toString(unidadesPretas.toArray()));
+		System.out.print(ANSI_RESET);
 	}
 	
 }

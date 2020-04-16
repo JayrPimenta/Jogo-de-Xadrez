@@ -27,10 +27,17 @@ public class PartidaDeXadrez {
 		return matriz;
 	}
 	
+<<<<<<< HEAD
 	public boolean[][] movimentosPossiveis(PosicaoDoXadrez posicaoDeOrigem) {
 		Posicao posicao = posicaoDeOrigem.paraPosicao();
 		validarPosicaoDeOrigem(posicao);
 		return tabuleiro.unidade(posicao).movimentosPossiveisDasUnidades();
+=======
+	public boolean[][] movimentosPociveis(PosicaoDoXadrez posicaoDeOrigem){
+		Posicao posicao = posicaoDeOrigem.paraPosicao();
+		validarPosicaoDeOrigem(posicao);
+		return tabuleiro.unidade(posicao).movimentosPociveisDasUnidades();
+>>>>>>> 450ec3c97d61a7a8b421fbcb6f2ca6f84d9ce4ef
 	}
 	
 	public UnidadeDeXadrez moverUnidadeDeXaderz(PosicaoDoXadrez posicaoDeOrigem,

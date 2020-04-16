@@ -32,6 +32,7 @@ public class PartidaDeXadrez {
 		Posicao origem = posicaoDeOrigem.paraPosicao();
 		Posicao destino = posicaoDeDestino.paraPosicao();
 		validarPosicaoDeOrigem(origem);
+		validarPosicaoAlvo(origem, destino);
 		Unidade unidadeCapturada = fazerMovimento(origem, destino);
 		return (UnidadeDeXadrez) unidadeCapturada;
 		
@@ -50,6 +51,12 @@ public class PartidaDeXadrez {
 		}
 		if (!tabuleiro.unidade(posicao).verificarMovimentoPossivel()) {
 			throw new XadrezExcecoes("Não existe movimento possivel para a unidade escolhida");
+		}
+	}
+	
+	private void validarPosicaoAlvo(Posicao origem, Posicao destino) {
+		if (!tabuleiro.unidade(origem).movimentoPocivelDaUnidade(destino)) {
+			throw new XadrezExcecoes("A unidade excolhida não pode fazer o movimento solicitado");
 		}
 	}
 	

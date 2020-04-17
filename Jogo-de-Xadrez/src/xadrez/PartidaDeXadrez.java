@@ -106,18 +106,54 @@ public class PartidaDeXadrez {
 			unidadesCapturadas.add(unidadeCapturada);
 		}
 		
+		// Movimento Especial Roque Pequeno
+		if (unidadeEmMovimento instanceof Rei && destino.getColuna() == origem.getColuna() + 2) {
+			Posicao origemDaTorre = new Posicao(origem.getLinha(), origem.getColuna() +3);
+			Posicao destinoDaTorre = new Posicao(origem.getLinha(), origem.getColuna() +1);
+			UnidadeDeXadrez moverTorre = (UnidadeDeXadrez)tabuleiro.removerUnidade(origemDaTorre); 
+			tabuleiro.colocarUnidade(moverTorre, destinoDaTorre);
+			moverTorre.adicionarMovimentoAoContador();
+		}
+		
+		// Movimento Especial Roque Grande
+		if (unidadeEmMovimento instanceof Rei && destino.getColuna() == origem.getColuna() - 2) {
+			Posicao origemDaTorre = new Posicao(origem.getLinha(), origem.getColuna() -4);
+			Posicao destinoDaTorre = new Posicao(origem.getLinha(), origem.getColuna() -1);
+			UnidadeDeXadrez moverTorre = (UnidadeDeXadrez)tabuleiro.removerUnidade(origemDaTorre); 
+			tabuleiro.colocarUnidade(moverTorre, destinoDaTorre);
+			moverTorre.adicionarMovimentoAoContador();
+		}
+		
 		return unidadeCapturada;
 	}
 	
 	private void desfazerMovimento(Posicao origem, Posicao destino, Unidade unidadeCapturada) {
-		UnidadeDeXadrez unidade = (UnidadeDeXadrez) tabuleiro.removerUnidade(destino);
-		unidade.removerMovimentoDoContador();
-		tabuleiro.colocarUnidade(unidade, origem);
+		UnidadeDeXadrez unidadeEmMovimento = (UnidadeDeXadrez) tabuleiro.removerUnidade(destino);
+		unidadeEmMovimento.removerMovimentoDoContador();
+		tabuleiro.colocarUnidade(unidadeEmMovimento, origem);
 		
 		if (unidadeCapturada != null) {
 			tabuleiro.colocarUnidade(unidadeCapturada, destino);
 			unidadesCapturadas.remove(unidadeCapturada);
 			unidadesNoTabuleiro.add(unidadeCapturada);
+		}
+		
+		// Movimento Especial Roque Pequeno
+		if (unidadeEmMovimento instanceof Rei && destino.getColuna() == origem.getColuna() + 2) {
+			Posicao origemDaTorre = new Posicao(origem.getLinha(), origem.getColuna() +3);
+			Posicao destinoDaTorre = new Posicao(origem.getLinha(), origem.getColuna() +1);
+			UnidadeDeXadrez moverTorre = (UnidadeDeXadrez)tabuleiro.removerUnidade(destinoDaTorre); 
+			tabuleiro.colocarUnidade(moverTorre, origemDaTorre);
+			moverTorre.removerMovimentoDoContador();
+		}
+		
+		// Movimento Especial Roque Grande
+		if (unidadeEmMovimento instanceof Rei && destino.getColuna() == origem.getColuna() - 2) {
+			Posicao origemDaTorre = new Posicao(origem.getLinha(), origem.getColuna() -4);
+			Posicao destinoDaTorre = new Posicao(origem.getLinha(), origem.getColuna() -1);
+			UnidadeDeXadrez moverTorre = (UnidadeDeXadrez)tabuleiro.removerUnidade(destinoDaTorre); 
+			tabuleiro.colocarUnidade(moverTorre, origemDaTorre);
+			moverTorre.removerMovimentoDoContador();
 		}
 	}
 	
@@ -212,7 +248,7 @@ public class PartidaDeXadrez {
 		colocarUnidade('b', 1, new Cavalo(tabuleiro, Cor.BRANCO));
 		colocarUnidade('c', 1, new Bispo(tabuleiro, Cor.BRANCO));
 		colocarUnidade('d', 1, new Rainha(tabuleiro, Cor.BRANCO));
-		colocarUnidade('e', 1, new Rei(tabuleiro, Cor.BRANCO));
+		colocarUnidade('e', 1, new Rei(tabuleiro, Cor.BRANCO, this));
 		colocarUnidade('f', 1, new Bispo(tabuleiro, Cor.BRANCO));
 		colocarUnidade('g', 1, new Cavalo(tabuleiro, Cor.BRANCO));
 		colocarUnidade('h', 1, new Torre(tabuleiro, Cor.BRANCO));
@@ -231,7 +267,7 @@ public class PartidaDeXadrez {
 		colocarUnidade('b', 8, new Cavalo(tabuleiro, Cor.PRETO));
 		colocarUnidade('c', 8, new Bispo(tabuleiro, Cor.PRETO));
 		colocarUnidade('d', 8, new Rainha(tabuleiro, Cor.PRETO));
-		colocarUnidade('e', 8, new Rei(tabuleiro, Cor.PRETO));
+		colocarUnidade('e', 8, new Rei(tabuleiro, Cor.PRETO, this));
 		colocarUnidade('f', 8, new Bispo(tabuleiro, Cor.PRETO));
 		colocarUnidade('g', 8, new Cavalo(tabuleiro, Cor.PRETO));
 		colocarUnidade('h', 8, new Torre(tabuleiro, Cor.PRETO));

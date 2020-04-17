@@ -58,7 +58,17 @@ public class InterfaceDoUsuario {
 		mostrarUnidadesCapturadas(listaUnidadesCapturadas);
 		System.out.println();
 		System.out.println("Turno: " + partida.getTurno());
-		System.out.println("Aguardando movimento do jogador "+ partida.getJogadorDaVez());
+		
+		if (!partida.getXequeMate()) {
+			System.out.println("Aguardando movimento do jogador "+ partida.getJogadorDaVez());
+			
+			if (partida.getXeque()) {
+				System.out.println("Xeque!");
+			}
+		} else {
+			System.out.println("Xeque-Mate!");
+			System.out.println("Vencedor: " + partida.getJogadorDaVez());
+		}
 		
 		
 	}

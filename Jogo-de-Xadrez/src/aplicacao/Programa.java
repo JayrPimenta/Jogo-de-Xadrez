@@ -18,7 +18,7 @@ public class Programa {
 		PartidaDeXadrez partida = new PartidaDeXadrez();
 		List<UnidadeDeXadrez> listaUnidadesCapturadas = new ArrayList<>();
 		
-		while(true) {
+		while(!partida.getXequeMate()) {
 			try {
 				InterfaceDoUsuario.atualizarATela();
 				InterfaceDoUsuario.criarPartida(partida, listaUnidadesCapturadas);
@@ -54,7 +54,8 @@ public class Programa {
 			
 			
 		}
-		
+		InterfaceDoUsuario.atualizarATela();
+		InterfaceDoUsuario.criarPartida(partida, listaUnidadesCapturadas);
 		
 		
 		

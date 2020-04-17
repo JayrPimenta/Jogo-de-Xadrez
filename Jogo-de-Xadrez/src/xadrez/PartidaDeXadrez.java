@@ -2,6 +2,7 @@ package xadrez;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import tabuleiro.Posicao;
 import tabuleiro.Tabuleiro;
@@ -14,6 +15,8 @@ public class PartidaDeXadrez {
 	private Tabuleiro tabuleiro;
 	private Integer turno;
 	private Cor jogadorDaVez;
+	private boolean xeque;
+	private boolean xequeMate;
 	
 	private List<Unidade> unidadesNoTabuleiro = new ArrayList<>();
 	private List<Unidade> unidadesCapturadas = new ArrayList<>();
@@ -31,6 +34,14 @@ public class PartidaDeXadrez {
 	
 	public Cor getJogadorDaVez() {
 		return jogadorDaVez;
+	}
+	
+	public boolean getXeque() {
+		return xeque;
+	}
+	
+	public boolean getXequeMate() {
+		return xequeMate;
 	}
 	
 	public UnidadeDeXadrez[][] getUnidades(){
@@ -60,7 +71,22 @@ public class PartidaDeXadrez {
 		validarPosicaoDeOrigem(origem);
 		validarPosicaoAlvo(origem, destino);
 		Unidade unidadeCapturada = fazerMovimento(origem, destino);
+		
+		if (verificarXeque(getJogadorDaVez())) {
+			desfazerMovimento(origem, destino, unidadeCapturada);
+			throw new XadrezExcecoes("Você não pode se colocar em xeque");
+		}
+		
+		
+		
+		xeque = (verificarXeque(oponente(jogadorDaVez))) ? true : false;
+		
+		if (verificarXequeMate(oponente(jogadorDaVez))) {
+			xequeMate = true;
+		} else {
 		auternarTurnos();
+		}
+		
 		return (UnidadeDeXadrez) unidadeCapturada;
 		
 	}
@@ -76,6 +102,17 @@ public class PartidaDeXadrez {
 		}
 		
 		return unidadeCapturada;
+	}
+	
+	private void desfazerMovimento(Posicao origem, Posicao destino, Unidade unidadeCapturada) {
+		Unidade unidade = tabuleiro.removerUnidade(destino);
+		tabuleiro.colocarUnidade(unidade, origem);
+		
+		if (unidadeCapturada != null) {
+			tabuleiro.colocarUnidade(unidadeCapturada, destino);
+			unidadesCapturadas.remove(unidadeCapturada);
+			unidadesNoTabuleiro.add(unidadeCapturada);
+		}
 	}
 	
 	private void validarPosicaoDeOrigem(Posicao posicao) {
@@ -101,6 +138,62 @@ public class PartidaDeXadrez {
 		jogadorDaVez = (jogadorDaVez == Cor.BRANCO) ? Cor.PRETO : Cor.BRANCO;
 	}
 	
+	private Cor oponente(Cor cor) {
+		return (cor == Cor.BRANCO) ? Cor.PRETO : Cor.BRANCO;
+	}
+	
+	private UnidadeDeXadrez identificarORei(Cor cor) {
+		List<Unidade> listaDeUnidades = unidadesNoTabuleiro.stream().filter(unidade -> ((UnidadeDeXadrez)unidade).getCor() == cor).collect(Collectors.toList());
+		
+		for (Unidade rei : listaDeUnidades) {
+			if (rei instanceof Rei) {
+				return (UnidadeDeXadrez) rei;
+			}
+		}
+		throw new IllegalStateException("Não existe o rei da cor "+ cor +" no tabuleiro");
+	}
+	
+	private boolean verificarXeque(Cor cor) {
+		Posicao posicaoDoRei = identificarORei(cor).getPosicaoDoXadrez().paraPosicao();
+		List<Unidade> listaDeUnidadesDoOponente = unidadesNoTabuleiro.stream().filter(unidade -> ((UnidadeDeXadrez)unidade).getCor() == oponente(cor)).collect(Collectors.toList());
+		
+		for (Unidade unidadeDoOponente : listaDeUnidadesDoOponente) {
+			boolean[][] matrizDeMovimentos = unidadeDoOponente.movimentosPossiveisDasUnidades();
+			if (matrizDeMovimentos[posicaoDoRei.getLinha()][posicaoDoRei.getColuna()]) {
+				return true;
+			}
+		}
+		return false;
+		
+	}
+	
+	private boolean verificarXequeMate(Cor cor) {
+		if (!verificarXeque(cor)) {
+			return false;
+		}
+		
+		List<Unidade> listaDeUnidades = unidadesNoTabuleiro.stream().filter(unidade -> ((UnidadeDeXadrez)unidade).getCor() == cor).collect(Collectors.toList());
+		
+		for (Unidade unidade : listaDeUnidades) {
+			boolean[][] matrizDeMovimentos = unidade.movimentosPossiveisDasUnidades();
+			for (int linha = 0; linha < tabuleiro.getLinhas(); linha++) {
+				for (int coluna = 0; coluna < tabuleiro.getColunas(); coluna++) {
+					if (matrizDeMovimentos[linha][coluna]) {
+						Posicao origem = ((UnidadeDeXadrez)unidade).getPosicaoDoXadrez().paraPosicao();
+						Posicao destino = new Posicao(linha, coluna);
+						Unidade unidadeCapturada = fazerMovimento(origem, destino);
+						boolean verificarXeque = verificarXeque(cor);
+						desfazerMovimento(origem, destino, unidadeCapturada);
+						if (!verificarXeque) {
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return true;
+	}
+	
 	private void colocarUnidade(char coluna, int linha, UnidadeDeXadrez unidade) {
 		tabuleiro.colocarUnidade(unidade, new PosicaoDoXadrez(coluna, linha).paraPosicao());
 		unidadesNoTabuleiro.add(unidade);
@@ -108,7 +201,7 @@ public class PartidaDeXadrez {
 	
 	private void inicioDaPartidaColocarUnidades() {
 		colocarUnidade('a', 1, new Torre(tabuleiro, Cor.BRANCO));
-		colocarUnidade('h', 1, new Torre(tabuleiro, Cor.BRANCO));
+		colocarUnidade('h', 7, new Torre(tabuleiro, Cor.BRANCO));
 		colocarUnidade('e', 1, new Rei(tabuleiro, Cor.BRANCO));
 		
 		colocarUnidade('a', 8, new Torre(tabuleiro, Cor.PRETO));

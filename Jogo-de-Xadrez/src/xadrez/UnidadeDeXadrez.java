@@ -17,9 +17,15 @@ public abstract class UnidadeDeXadrez extends Unidade {
 		return cor;
 	}
 	
+	public PosicaoDoXadrez getPosicaoDoXadrez() {
+		return PosicaoDoXadrez.dePosicao(posicao);
+	}
+	
 	protected boolean verificarUnidadeDoOponente(Posicao posicao) {
 		UnidadeDeXadrez unidade = (UnidadeDeXadrez) getTabuleiro().unidade(posicao);
 		return unidade != null && unidade.getCor() != cor;
 		
 	}
+	
+	
 }

@@ -3,12 +3,16 @@ package xadrez.unidades;
 import tabuleiro.Posicao;
 import tabuleiro.Tabuleiro;
 import xadrez.Cor;
+import xadrez.PartidaDeXadrez;
 import xadrez.UnidadeDeXadrez;
 
 public class Peao extends UnidadeDeXadrez {
+	
+	private PartidaDeXadrez partidaDeXadrez;
 
-	public Peao(Tabuleiro tabuleiro, Cor cor) {
+	public Peao(Tabuleiro tabuleiro, Cor cor, PartidaDeXadrez partidaDeXadrez) {
 		super(tabuleiro, cor);
+		this.partidaDeXadrez = partidaDeXadrez;
 	}
 
 	@Override
@@ -43,6 +47,20 @@ public class Peao extends UnidadeDeXadrez {
 			if(getTabuleiro().verificarExistenciaDePosicao(verificarPosicao) && verificarUnidadeDoOponente(verificarPosicao)) {
 				matrizDePociveisMovimentos[verificarPosicao.getLinha()][verificarPosicao.getColuna()] = true;
 			}
+			
+			// Movimento Especial En Passant unidades brancas
+			
+			if (posicao.getLinha() == 3) {
+				Posicao aEsquerda = new Posicao(posicao.getLinha(), posicao.getColuna() -1);
+				if (getTabuleiro().verificarExistenciaDePosicao(aEsquerda) && verificarUnidadeDoOponente(aEsquerda) && getTabuleiro().unidade(aEsquerda) == partidaDeXadrez.vulneravelEnPassant()) {
+					matrizDePociveisMovimentos[aEsquerda.getLinha() -1][aEsquerda.getColuna()] = true;
+				}
+				Posicao aDireita = new Posicao(posicao.getLinha(), posicao.getColuna() +1);
+				if (getTabuleiro().verificarExistenciaDePosicao(aDireita) && verificarUnidadeDoOponente(aDireita) && getTabuleiro().unidade(aDireita) == partidaDeXadrez.vulneravelEnPassant()) {
+					matrizDePociveisMovimentos[aDireita.getLinha() -1][aDireita.getColuna()] = true;
+				}
+			}
+			
 		} else {
 			verificarPosicao.setPosicao(posicao.getLinha() + 1, posicao.getColuna());
 			if(getTabuleiro().verificarExistenciaDePosicao(verificarPosicao) && !getTabuleiro().verificarPosicaoOcupadaPorOutraUnidade(verificarPosicao)) {
@@ -65,6 +83,18 @@ public class Peao extends UnidadeDeXadrez {
 			matrizDePociveisMovimentos[verificarPosicao.getLinha()][verificarPosicao.getColuna()] = true;
 			}
 			
+			// Movimento Especial En Passant unidades pretas
+			
+			if (posicao.getLinha() == 4) {
+				Posicao aEsquerda = new Posicao(posicao.getLinha(), posicao.getColuna() -1);
+				if (getTabuleiro().verificarExistenciaDePosicao(aEsquerda) && verificarUnidadeDoOponente(aEsquerda) && getTabuleiro().unidade(aEsquerda) == partidaDeXadrez.vulneravelEnPassant()) {
+					matrizDePociveisMovimentos[aEsquerda.getLinha() +1][aEsquerda.getColuna()] = true;
+				}
+				Posicao aDireita = new Posicao(posicao.getLinha(), posicao.getColuna() +1);
+				if (getTabuleiro().verificarExistenciaDePosicao(aDireita) && verificarUnidadeDoOponente(aDireita) && getTabuleiro().unidade(aDireita) == partidaDeXadrez.vulneravelEnPassant()) {
+					matrizDePociveisMovimentos[aDireita.getLinha() +1][aDireita.getColuna()] = true;
+				}
+			}			
 		}
 			
 		

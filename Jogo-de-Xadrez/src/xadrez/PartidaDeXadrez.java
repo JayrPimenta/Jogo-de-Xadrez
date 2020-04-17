@@ -21,6 +21,7 @@ public class PartidaDeXadrez {
 	private Cor jogadorDaVez;
 	private boolean xeque;
 	private boolean xequeMate;
+	private UnidadeDeXadrez vulneravelEnPassant;
 	
 	private List<Unidade> unidadesNoTabuleiro = new ArrayList<>();
 	private List<Unidade> unidadesCapturadas = new ArrayList<>();
@@ -46,6 +47,10 @@ public class PartidaDeXadrez {
 	
 	public boolean getXequeMate() {
 		return xequeMate;
+	}
+	
+	public UnidadeDeXadrez vulneravelEnPassant() {
+		return vulneravelEnPassant;
 	}
 	
 	public UnidadeDeXadrez[][] getUnidades(){
@@ -81,7 +86,7 @@ public class PartidaDeXadrez {
 			throw new XadrezExcecoes("Você não pode se colocar em xeque");
 		}
 		
-		
+		UnidadeDeXadrez unidadeMovida = (UnidadeDeXadrez)tabuleiro.unidade(destino);
 		
 		xeque = (verificarXeque(oponente(jogadorDaVez))) ? true : false;
 		
@@ -89,6 +94,13 @@ public class PartidaDeXadrez {
 			xequeMate = true;
 		} else {
 		auternarTurnos();
+		}
+		
+		// Movimento especial en Passant
+		if (unidadeMovida instanceof Peao && (destino.getLinha() == origem.getLinha() -2 || destino.getLinha() == origem.getLinha() +2)) {
+			vulneravelEnPassant = unidadeMovida;
+		} else {
+			vulneravelEnPassant = null;
 		}
 		
 		return (UnidadeDeXadrez) unidadeCapturada;
@@ -124,6 +136,22 @@ public class PartidaDeXadrez {
 			moverTorre.adicionarMovimentoAoContador();
 		}
 		
+		
+		// Movimento Especial en Passant
+		if (unidadeEmMovimento instanceof Peao) {
+			if (origem.getColuna() != destino.getColuna() && unidadeCapturada == null) {
+				Posicao posicaoDoPeao;
+				if (unidadeEmMovimento.getCor() == Cor.BRANCO) {
+					posicaoDoPeao = new Posicao(destino.getLinha() +1, destino.getColuna());
+				} else {
+					posicaoDoPeao = new Posicao(destino.getLinha() -1, destino.getColuna());
+				}
+				unidadeCapturada = tabuleiro.removerUnidade(posicaoDoPeao);
+				unidadesCapturadas.add(unidadeCapturada);
+				unidadesNoTabuleiro.remove(unidadeCapturada);
+			}
+		}
+		
 		return unidadeCapturada;
 	}
 	
@@ -154,6 +182,22 @@ public class PartidaDeXadrez {
 			UnidadeDeXadrez moverTorre = (UnidadeDeXadrez)tabuleiro.removerUnidade(destinoDaTorre); 
 			tabuleiro.colocarUnidade(moverTorre, origemDaTorre);
 			moverTorre.removerMovimentoDoContador();
+		}
+		
+		// Movimento Especial en Passant
+		if (unidadeEmMovimento instanceof Peao) {
+			if (origem.getColuna() != destino.getColuna() && unidadeCapturada == vulneravelEnPassant) {
+				
+				UnidadeDeXadrez peao = (UnidadeDeXadrez)tabuleiro.removerUnidade(destino);
+				
+				Posicao posicaoDoPeao;
+				if (unidadeEmMovimento.getCor() == Cor.BRANCO) {
+					posicaoDoPeao = new Posicao(3, destino.getColuna());
+				} else {
+					posicaoDoPeao = new Posicao(4, destino.getColuna());
+				}
+				tabuleiro.colocarUnidade(peao, posicaoDoPeao);
+			}
 		}
 	}
 	
@@ -253,14 +297,14 @@ public class PartidaDeXadrez {
 		colocarUnidade('g', 1, new Cavalo(tabuleiro, Cor.BRANCO));
 		colocarUnidade('h', 1, new Torre(tabuleiro, Cor.BRANCO));
 		
-		colocarUnidade('a', 2, new Peao(tabuleiro, Cor.BRANCO));
-		colocarUnidade('b', 2, new Peao(tabuleiro, Cor.BRANCO));
-		colocarUnidade('c', 2, new Peao(tabuleiro, Cor.BRANCO));
-		colocarUnidade('d', 2, new Peao(tabuleiro, Cor.BRANCO));
-		colocarUnidade('e', 2, new Peao(tabuleiro, Cor.BRANCO));
-		colocarUnidade('f', 2, new Peao(tabuleiro, Cor.BRANCO));
-		colocarUnidade('g', 2, new Peao(tabuleiro, Cor.BRANCO));
-		colocarUnidade('h', 2, new Peao(tabuleiro, Cor.BRANCO));
+		colocarUnidade('a', 2, new Peao(tabuleiro, Cor.BRANCO, this));
+		colocarUnidade('b', 2, new Peao(tabuleiro, Cor.BRANCO, this));
+		colocarUnidade('c', 2, new Peao(tabuleiro, Cor.BRANCO, this));
+		colocarUnidade('d', 2, new Peao(tabuleiro, Cor.BRANCO, this));
+		colocarUnidade('e', 2, new Peao(tabuleiro, Cor.BRANCO, this));
+		colocarUnidade('f', 2, new Peao(tabuleiro, Cor.BRANCO, this));
+		colocarUnidade('g', 2, new Peao(tabuleiro, Cor.BRANCO, this));
+		colocarUnidade('h', 2, new Peao(tabuleiro, Cor.BRANCO, this));
 		
 		// Unidades Pretas
 		colocarUnidade('a', 8, new Torre(tabuleiro, Cor.PRETO));
@@ -272,14 +316,14 @@ public class PartidaDeXadrez {
 		colocarUnidade('g', 8, new Cavalo(tabuleiro, Cor.PRETO));
 		colocarUnidade('h', 8, new Torre(tabuleiro, Cor.PRETO));
 		
-		colocarUnidade('a', 7, new Peao(tabuleiro, Cor.PRETO));
-		colocarUnidade('b', 7, new Peao(tabuleiro, Cor.PRETO));
-		colocarUnidade('c', 7, new Peao(tabuleiro, Cor.PRETO));
-		colocarUnidade('d', 7, new Peao(tabuleiro, Cor.PRETO));
-		colocarUnidade('e', 7, new Peao(tabuleiro, Cor.PRETO));
-		colocarUnidade('f', 7, new Peao(tabuleiro, Cor.PRETO));
-		colocarUnidade('g', 7, new Peao(tabuleiro, Cor.PRETO));
-		colocarUnidade('h', 7, new Peao(tabuleiro, Cor.PRETO));
+		colocarUnidade('a', 7, new Peao(tabuleiro, Cor.PRETO, this));
+		colocarUnidade('b', 7, new Peao(tabuleiro, Cor.PRETO, this));
+		colocarUnidade('c', 7, new Peao(tabuleiro, Cor.PRETO, this));
+		colocarUnidade('d', 7, new Peao(tabuleiro, Cor.PRETO, this));
+		colocarUnidade('e', 7, new Peao(tabuleiro, Cor.PRETO, this));
+		colocarUnidade('f', 7, new Peao(tabuleiro, Cor.PRETO, this));
+		colocarUnidade('g', 7, new Peao(tabuleiro, Cor.PRETO, this));
+		colocarUnidade('h', 7, new Peao(tabuleiro, Cor.PRETO, this));
 	
 		
 	}

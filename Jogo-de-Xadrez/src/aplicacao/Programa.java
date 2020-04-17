@@ -1,5 +1,6 @@
 package aplicacao;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -45,6 +46,10 @@ public class Programa {
 				if (partida.getUnidadePromovida() != null) {
 					System.out.print("Informe a promoção para a unidade Torre(Tr), Cavalo(Cv), Bispo(Bp) ou Rainha(Ra): ");
 					String unidade = sc.nextLine();
+					while (!unidade.equals("Tr") && !unidade.equals("Cv") && !unidade.equals("Bp") && !unidade.equals("Ra")) {
+						System.out.print("Unidade invalida: Favor informar uma promoção valida para a unidade Torre(Tr), Cavalo(Cv), Bispo(Bp) ou Rainha(Ra): ");
+						unidade = sc.nextLine();
+					}
 					partida.trocaDeUnidadePromovida(unidade);
 					
 				}

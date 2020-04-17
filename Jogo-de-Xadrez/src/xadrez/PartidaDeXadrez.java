@@ -1,6 +1,5 @@
 package xadrez;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -128,7 +127,7 @@ public class PartidaDeXadrez {
 		}
 		
 		if(!unidade.equals("Tr") && !unidade.equals("Cv") && !unidade.equals("Bp") && !unidade.equals("Ra")) {
-			throw new InvalidParameterException("Unidade invalida");
+			return unidadePromovida;
 		}
 		
 		Posicao posicaoUnidadePromovida = unidadePromovida.getPosicaoDoXadrez().paraPosicao();

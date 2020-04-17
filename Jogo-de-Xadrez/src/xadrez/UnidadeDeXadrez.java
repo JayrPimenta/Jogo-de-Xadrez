@@ -7,6 +7,7 @@ import tabuleiro.Unidade;
 public abstract class UnidadeDeXadrez extends Unidade {
 
 	private Cor cor;
+	private int contadorDeMovimentos;
 
 	public UnidadeDeXadrez(Tabuleiro tabuleiro, Cor cor) {
 		super(tabuleiro);
@@ -15,6 +16,18 @@ public abstract class UnidadeDeXadrez extends Unidade {
 
 	public Cor getCor() {
 		return cor;
+	}
+	
+	public int getContadorDeMovimentos() {
+		return contadorDeMovimentos;
+	}
+	
+	public void adicionarMovimentoAoContador() {
+		contadorDeMovimentos++;
+	}
+	
+	public void removerMovimentoDoContador() {
+		contadorDeMovimentos--;
 	}
 	
 	public PosicaoDoXadrez getPosicaoDoXadrez() {
@@ -26,6 +39,8 @@ public abstract class UnidadeDeXadrez extends Unidade {
 		return unidade != null && unidade.getCor() != cor;
 		
 	}
+	
+	
 	
 	
 }

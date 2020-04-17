@@ -7,6 +7,10 @@ import java.util.stream.Collectors;
 import tabuleiro.Posicao;
 import tabuleiro.Tabuleiro;
 import tabuleiro.Unidade;
+import xadrez.unidades.Bispo;
+import xadrez.unidades.Cavalo;
+import xadrez.unidades.Peao;
+import xadrez.unidades.Rainha;
 import xadrez.unidades.Rei;
 import xadrez.unidades.Torre;
 
@@ -92,7 +96,8 @@ public class PartidaDeXadrez {
 	}
 	
 	private Unidade fazerMovimento(Posicao origem, Posicao destino) {
-		Unidade unidadeEmMovimento = tabuleiro.removerUnidade(origem);
+		UnidadeDeXadrez unidadeEmMovimento = (UnidadeDeXadrez) tabuleiro.removerUnidade(origem);
+		unidadeEmMovimento.adicionarMovimentoAoContador();
 		Unidade unidadeCapturada = tabuleiro.removerUnidade(destino);
 		tabuleiro.colocarUnidade(unidadeEmMovimento, destino);
 		
@@ -105,7 +110,8 @@ public class PartidaDeXadrez {
 	}
 	
 	private void desfazerMovimento(Posicao origem, Posicao destino, Unidade unidadeCapturada) {
-		Unidade unidade = tabuleiro.removerUnidade(destino);
+		UnidadeDeXadrez unidade = (UnidadeDeXadrez) tabuleiro.removerUnidade(destino);
+		unidade.removerMovimentoDoContador();
 		tabuleiro.colocarUnidade(unidade, origem);
 		
 		if (unidadeCapturada != null) {
@@ -200,13 +206,45 @@ public class PartidaDeXadrez {
 	}
 	
 	private void inicioDaPartidaColocarUnidades() {
-		colocarUnidade('a', 1, new Torre(tabuleiro, Cor.BRANCO));
-		colocarUnidade('h', 7, new Torre(tabuleiro, Cor.BRANCO));
-		colocarUnidade('e', 1, new Rei(tabuleiro, Cor.BRANCO));
 		
+		// Unidades Brancas
+		colocarUnidade('a', 1, new Torre(tabuleiro, Cor.BRANCO));
+		colocarUnidade('b', 1, new Cavalo(tabuleiro, Cor.BRANCO));
+		colocarUnidade('c', 1, new Bispo(tabuleiro, Cor.BRANCO));
+		colocarUnidade('d', 1, new Rainha(tabuleiro, Cor.BRANCO));
+		colocarUnidade('e', 1, new Rei(tabuleiro, Cor.BRANCO));
+		colocarUnidade('f', 1, new Bispo(tabuleiro, Cor.BRANCO));
+		colocarUnidade('g', 1, new Cavalo(tabuleiro, Cor.BRANCO));
+		colocarUnidade('h', 1, new Torre(tabuleiro, Cor.BRANCO));
+		
+		colocarUnidade('a', 2, new Peao(tabuleiro, Cor.BRANCO));
+		colocarUnidade('b', 2, new Peao(tabuleiro, Cor.BRANCO));
+		colocarUnidade('c', 2, new Peao(tabuleiro, Cor.BRANCO));
+		colocarUnidade('d', 2, new Peao(tabuleiro, Cor.BRANCO));
+		colocarUnidade('e', 2, new Peao(tabuleiro, Cor.BRANCO));
+		colocarUnidade('f', 2, new Peao(tabuleiro, Cor.BRANCO));
+		colocarUnidade('g', 2, new Peao(tabuleiro, Cor.BRANCO));
+		colocarUnidade('h', 2, new Peao(tabuleiro, Cor.BRANCO));
+		
+		// Unidades Pretas
 		colocarUnidade('a', 8, new Torre(tabuleiro, Cor.PRETO));
-		colocarUnidade('h', 8, new Torre(tabuleiro, Cor.PRETO));
+		colocarUnidade('b', 8, new Cavalo(tabuleiro, Cor.PRETO));
+		colocarUnidade('c', 8, new Bispo(tabuleiro, Cor.PRETO));
+		colocarUnidade('d', 8, new Rainha(tabuleiro, Cor.PRETO));
 		colocarUnidade('e', 8, new Rei(tabuleiro, Cor.PRETO));
+		colocarUnidade('f', 8, new Bispo(tabuleiro, Cor.PRETO));
+		colocarUnidade('g', 8, new Cavalo(tabuleiro, Cor.PRETO));
+		colocarUnidade('h', 8, new Torre(tabuleiro, Cor.PRETO));
+		
+		colocarUnidade('a', 7, new Peao(tabuleiro, Cor.PRETO));
+		colocarUnidade('b', 7, new Peao(tabuleiro, Cor.PRETO));
+		colocarUnidade('c', 7, new Peao(tabuleiro, Cor.PRETO));
+		colocarUnidade('d', 7, new Peao(tabuleiro, Cor.PRETO));
+		colocarUnidade('e', 7, new Peao(tabuleiro, Cor.PRETO));
+		colocarUnidade('f', 7, new Peao(tabuleiro, Cor.PRETO));
+		colocarUnidade('g', 7, new Peao(tabuleiro, Cor.PRETO));
+		colocarUnidade('h', 7, new Peao(tabuleiro, Cor.PRETO));
+	
 		
 	}
 	

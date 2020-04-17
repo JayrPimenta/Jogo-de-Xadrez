@@ -42,6 +42,13 @@ public class Programa {
 					listaUnidadesCapturadas.add(unidadeCapturada);
 				}
 				
+				if (partida.getUnidadePromovida() != null) {
+					System.out.print("Informe a promoção para a unidade Torre(Tr), Cavalo(Cv), Bispo(Bp) ou Rainha(Ra): ");
+					String unidade = sc.nextLine();
+					partida.trocaDeUnidadePromovida(unidade);
+					
+				}
+				
 			}
 			catch (XadrezExcecoes e ) {
 				System.out.println(e.getMessage());

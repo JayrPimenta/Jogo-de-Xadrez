@@ -1,5 +1,6 @@
 package xadrez;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +23,7 @@ public class PartidaDeXadrez {
 	private boolean xeque;
 	private boolean xequeMate;
 	private UnidadeDeXadrez vulneravelEnPassant;
+	private UnidadeDeXadrez unidadePromovida;
 	
 	private List<Unidade> unidadesNoTabuleiro = new ArrayList<>();
 	private List<Unidade> unidadesCapturadas = new ArrayList<>();
@@ -49,8 +51,12 @@ public class PartidaDeXadrez {
 		return xequeMate;
 	}
 	
-	public UnidadeDeXadrez vulneravelEnPassant() {
+	public UnidadeDeXadrez getVulneravelEnPassant() {
 		return vulneravelEnPassant;
+	}
+	
+	public UnidadeDeXadrez getUnidadePromovida() {
+		return unidadePromovida;
 	}
 	
 	public UnidadeDeXadrez[][] getUnidades(){
@@ -88,6 +94,15 @@ public class PartidaDeXadrez {
 		
 		UnidadeDeXadrez unidadeMovida = (UnidadeDeXadrez)tabuleiro.unidade(destino);
 		
+		// Movimento Especial Promoção
+		unidadePromovida = null;
+		if (unidadeMovida instanceof Peao) {
+			if ( unidadeMovida.getCor() == Cor.BRANCO && destino.getLinha() == 0 || unidadeMovida.getCor() == Cor.PRETO && destino.getLinha() == 7) {
+				unidadePromovida = (UnidadeDeXadrez)tabuleiro.unidade(destino);
+				unidadePromovida = trocaDeUnidadePromovida("Ra");
+			}
+		}
+		
 		xeque = (verificarXeque(oponente(jogadorDaVez))) ? true : false;
 		
 		if (verificarXequeMate(oponente(jogadorDaVez))) {
@@ -106,6 +121,34 @@ public class PartidaDeXadrez {
 		return (UnidadeDeXadrez) unidadeCapturada;
 		
 	}
+	
+	public UnidadeDeXadrez trocaDeUnidadePromovida(String unidade) {
+		if (unidadePromovida == null) {
+			throw new IllegalStateException("Não tem unidade para ser promovida");
+		}
+		
+		if(!unidade.equals("Tr") && !unidade.equals("Cv") && !unidade.equals("Bp") && !unidade.equals("Ra")) {
+			throw new InvalidParameterException("Unidade invalida");
+		}
+		
+		Posicao posicaoUnidadePromovida = unidadePromovida.getPosicaoDoXadrez().paraPosicao();
+		Unidade peao = tabuleiro.removerUnidade(posicaoUnidadePromovida);
+		unidadesNoTabuleiro.remove(peao);
+		
+		UnidadeDeXadrez unidadePromovidaComNovaPatente = novaPatente(unidade, unidadePromovida.getCor());
+		tabuleiro.colocarUnidade(unidadePromovidaComNovaPatente, posicaoUnidadePromovida);	
+		unidadesNoTabuleiro.add(unidadePromovidaComNovaPatente);
+		return unidadePromovidaComNovaPatente;
+	}
+	
+	private UnidadeDeXadrez novaPatente(String patente, Cor cor) {
+		if (patente.equals("Tr")) return new Torre(tabuleiro, cor);
+		if (patente.equals("Cv")) return new Cavalo(tabuleiro, cor);
+		if (patente.equals("Bp")) return new Bispo(tabuleiro, cor);
+		return new Rainha(tabuleiro, cor);
+		
+	}
+	
 	
 	private Unidade fazerMovimento(Posicao origem, Posicao destino) {
 		UnidadeDeXadrez unidadeEmMovimento = (UnidadeDeXadrez) tabuleiro.removerUnidade(origem);
@@ -316,6 +359,7 @@ public class PartidaDeXadrez {
 		colocarUnidade('g', 8, new Cavalo(tabuleiro, Cor.PRETO));
 		colocarUnidade('h', 8, new Torre(tabuleiro, Cor.PRETO));
 		
+	
 		colocarUnidade('a', 7, new Peao(tabuleiro, Cor.PRETO, this));
 		colocarUnidade('b', 7, new Peao(tabuleiro, Cor.PRETO, this));
 		colocarUnidade('c', 7, new Peao(tabuleiro, Cor.PRETO, this));
@@ -324,7 +368,7 @@ public class PartidaDeXadrez {
 		colocarUnidade('f', 7, new Peao(tabuleiro, Cor.PRETO, this));
 		colocarUnidade('g', 7, new Peao(tabuleiro, Cor.PRETO, this));
 		colocarUnidade('h', 7, new Peao(tabuleiro, Cor.PRETO, this));
-	
+		
 		
 	}
 	

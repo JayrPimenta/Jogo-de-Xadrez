@@ -52,11 +52,11 @@ public class Peao extends UnidadeDeXadrez {
 			
 			if (posicao.getLinha() == 3) {
 				Posicao aEsquerda = new Posicao(posicao.getLinha(), posicao.getColuna() -1);
-				if (getTabuleiro().verificarExistenciaDePosicao(aEsquerda) && verificarUnidadeDoOponente(aEsquerda) && getTabuleiro().unidade(aEsquerda) == partidaDeXadrez.vulneravelEnPassant()) {
+				if (getTabuleiro().verificarExistenciaDePosicao(aEsquerda) && verificarUnidadeDoOponente(aEsquerda) && getTabuleiro().unidade(aEsquerda) == partidaDeXadrez.getVulneravelEnPassant()) {
 					matrizDePociveisMovimentos[aEsquerda.getLinha() -1][aEsquerda.getColuna()] = true;
 				}
 				Posicao aDireita = new Posicao(posicao.getLinha(), posicao.getColuna() +1);
-				if (getTabuleiro().verificarExistenciaDePosicao(aDireita) && verificarUnidadeDoOponente(aDireita) && getTabuleiro().unidade(aDireita) == partidaDeXadrez.vulneravelEnPassant()) {
+				if (getTabuleiro().verificarExistenciaDePosicao(aDireita) && verificarUnidadeDoOponente(aDireita) && getTabuleiro().unidade(aDireita) == partidaDeXadrez.getVulneravelEnPassant()) {
 					matrizDePociveisMovimentos[aDireita.getLinha() -1][aDireita.getColuna()] = true;
 				}
 			}
@@ -87,11 +87,11 @@ public class Peao extends UnidadeDeXadrez {
 			
 			if (posicao.getLinha() == 4) {
 				Posicao aEsquerda = new Posicao(posicao.getLinha(), posicao.getColuna() -1);
-				if (getTabuleiro().verificarExistenciaDePosicao(aEsquerda) && verificarUnidadeDoOponente(aEsquerda) && getTabuleiro().unidade(aEsquerda) == partidaDeXadrez.vulneravelEnPassant()) {
+				if (getTabuleiro().verificarExistenciaDePosicao(aEsquerda) && verificarUnidadeDoOponente(aEsquerda) && getTabuleiro().unidade(aEsquerda) == partidaDeXadrez.getVulneravelEnPassant()) {
 					matrizDePociveisMovimentos[aEsquerda.getLinha() +1][aEsquerda.getColuna()] = true;
 				}
 				Posicao aDireita = new Posicao(posicao.getLinha(), posicao.getColuna() +1);
-				if (getTabuleiro().verificarExistenciaDePosicao(aDireita) && verificarUnidadeDoOponente(aDireita) && getTabuleiro().unidade(aDireita) == partidaDeXadrez.vulneravelEnPassant()) {
+				if (getTabuleiro().verificarExistenciaDePosicao(aDireita) && verificarUnidadeDoOponente(aDireita) && getTabuleiro().unidade(aDireita) == partidaDeXadrez.getVulneravelEnPassant()) {
 					matrizDePociveisMovimentos[aDireita.getLinha() +1][aDireita.getColuna()] = true;
 				}
 			}			
